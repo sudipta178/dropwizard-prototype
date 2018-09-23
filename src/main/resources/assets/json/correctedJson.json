@@ -1,0 +1,101 @@
+{
+  "Nodes": [{
+    "id": 1,
+    "route": "1",
+    "name": "end",
+    "children": [{
+      "id": 2,
+      "route": "1/2",
+      "name": "review_request",
+      "children": [{
+        "id": 3,
+        "route": "1/2/3",
+        "name": "fetch_submission_info",
+        "children": [{
+          "id": 4,
+          "route": "1/2/3/4",
+          "name": "start"
+        }]
+      }]
+    },
+      {
+        "id": 5,
+        "route": "1/5",
+        "name": "cleanup",
+        "children": [{
+
+          "id": 6,
+          "route": "1/5/6",
+          "name": "check_ez_best_tier1_sanity",
+          "children": [{
+            "id": 7,
+            "route": "1/5/6/7",
+            "name": "submit_ez_best_tier1_sanity",
+            "children": [{
+              "id": 8,
+              "route": "1/5/6/7/8",
+              "name": "select_ez_best_tier1_sanity",
+              "children": [{
+                "id": 9,
+                "route": "1/5/6/7/8/9",
+                "name": "prepare_for_test",
+                "children": [{
+                  "id": 10,
+                  "route": "1/5/6/7/8/9/10",
+                  "name": "skip_build_nxox",
+                  "children": [{
+                    "id": 11,
+                    "route": "1/5/6/7/8/9/10/11",
+                    "name": "check_imge",
+                    "children": [{
+                      "id": 12,
+                      "route": "1/5/6/7/8/9/10/11/12",
+                      "name": "check_free_space",
+                      "children": [{
+                        "id": 13,
+                        "route": "1/5/6/7/8/9/10/11/12/13",
+                        "name": "select_test",
+                        "children": [{
+                          "id": 14,
+                          "route": "1/5/6/7/8/9/10/11/12/13/14",
+                          "name": "fetch_submission_info"
+                        }]
+                      }]
+                    }]
+                  }]
+                },
+                  {
+                    "id": 15,
+                    "route": "1/5/6/7/8/9/15",
+                    "name": "build_nxos",
+                    "children": [{
+                      "id": 16,
+                      "route": "1/5/6/7/8/9/15/16",
+                      "name": "check_imge"
+                    }]
+                  }
+                ]
+
+              }]
+            }]
+          },
+            {
+              "id": 17,
+              "route": "1/5/6/17",
+              "name": "skip_ez_best_tier1_sanity",
+              "children": [{
+                "id": 18,
+                "route": "1/5/6/17/18",
+                "name": "select_ez_best_tier1_sanity"
+              }]
+
+            }
+
+          ]
+        }]
+
+      }
+    ]
+
+  }]
+}

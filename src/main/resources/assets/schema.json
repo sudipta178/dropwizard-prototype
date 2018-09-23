@@ -1,0 +1,26 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$ref": "#/definitions/nodes",
+  "type": "object",
+  "definitions": {
+    "nodes": {
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "route": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "children": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/nodes"
+          }
+        }
+      }
+    }
+  }
+}
