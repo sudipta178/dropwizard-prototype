@@ -1,0 +1,251 @@
+{
+  "display_name": "MAIN_DAG",
+  "name": "'PAW_WORKFLOW_N9K_INT2'",
+  "id": "PAW_WORKFLOW_N9K_INT2",
+  "runner_names": ["airflow", "jenkins"],
+  "description": "'PAW Template Sample'",
+  "child_dagname": "'BUILD'",
+  "interval": "None",
+  "start_date": "2018-6-8",
+  "nodes": [{
+    "id": 0,
+    "display_name": "START",
+    "name": "'start'",
+    "parent": [],
+    "runner": {
+      "name": "airflow",
+      "operater_name": "DummyOperator",
+      "function": "",
+      "context": "",
+      "minutes_name": "",
+      "minutes": "",
+      "execution_timeout": "",
+      "rule": "",
+      "dag": "MAIN_DAG"
+    }
+
+  },
+    {
+      "id": 1,
+      "display_name": "FETCH_SUBMISSION_INFO",
+      "name": "'fetch_submission_info'",
+      "parent": [0],
+      "runner": {
+        "name": "airflow",
+        "operater_name": "PythonOperator",
+        "function": "fetch_submission_details",
+        "context": "True",
+        "minutes_name": "FETCH_SUBMISSION_INFO_TIMEOUT",
+        "minutes": "5",
+        "execution_timeout": "timedelta(minutes=FETCH_SUBMISSION_INFO_TIMEOUT)",
+        "rule": "",
+        "dag": "MAIN_DAG"
+
+      }
+    },
+    {
+      "id": 2,
+      "display_name": "SELECT_TEST",
+      "name": "'select_test'",
+      "parent": [1],
+      "runner": {
+        "name": "airflow",
+        "operater_name": "PythonOperator",
+        "function": "get_selected_tests",
+        "context": "True",
+        "minutes_name": "SELECT_TEST_TIMEOUT",
+        "minutes": "5",
+        "execution_timeout": "timedelta(minutes=SELECT_TEST_TIMEOUT)",
+        "rule": "",
+        "dag": "MAIN_DAG"
+
+      }
+    },
+    {
+      "id": 3,
+      "display_name": "REVIEW_REQUEST",
+      "name": "'review_request'",
+      "parent": [1],
+      "runner": {
+        "name": "airflow",
+        "operater_name": "PythonOperator",
+        "function": "review_request",
+        "context": "True",
+        "minutes_name": "",
+        "minutes": "",
+        "execution_timeout": "",
+        "rule": "",
+        "dag": "MAIN_DAG"
+
+      }
+    },
+
+    {
+      "id": 4,
+      "display_name": "CHECK_SPACE",
+      "name": "'check_free_space'",
+      "parent": [2],
+      "runner": {
+        "name": "airflow",
+        "operater_name": "PythonOperator",
+        "function": "validate_free_space",
+        "context": "",
+        "minutes_name": "CHECK_FREE_SPACE_TIMEOUT",
+        "minutes": "5",
+        "execution_timeout": "timedelta(minutes=CHECK_FREE_SPACE_TIMEOUT)",
+        "rule": "",
+        "dag": "MAIN_DAG"
+
+      }
+    },
+    {
+      "id": 5,
+      "display_name": "CHECK_IMAGE",
+      "name": "'check_image'",
+      "parent": [4],
+      "runner": {
+        "name": "airflow",
+        "operater_name": "BranchPythonOperator",
+        "function": "image_exists",
+        "context": "",
+        "minutes_name": "CHECK_IMAGE_TIMEOUT",
+        "minutes": "5",
+        "execution_timeout": "timedelta(minutes=CHECK_IMAGE_TIMEOUT)",
+        "rule": "",
+        "dag": "MAIN_DAG"
+
+      }
+    },
+    {
+      "id": 6,
+      "display_name": "SKIP_BUILD",
+      "name": "'skip_build_nxos'",
+      "parent": [5],
+      "runner": {
+        "name": "airflow",
+        "operater_name": "DummyOperator",
+        "function": "",
+        "context": "",
+        "minutes_name": "SKIP_BUILD_TIMEOUT",
+        "minutes": "5",
+        "execution_timeout": "timedelta(minutes=SKIP_BUILD_TIMEOUT)",
+        "rule": "",
+        "dag": "MAIN_DAG"
+
+      }
+    },
+    {
+      "id": 7,
+      "display_name": "BUILD",
+      "name": "'build_nxos'",
+      "parent": [5],
+      "runner": {
+        "name": "airflow",
+        "operater_name": "PythonOperator",
+        "function": "build_task",
+        "context": "True",
+        "minutes_name": "BUILD_TIMEOUT",
+        "minutes": "5",
+        "execution_timeout": "timedelta(minutes=BUILD_TIMEOUT)",
+        "rule": "",
+        "dag": "MAIN_DAG"
+
+      }
+    },
+    {
+      "id": 8,
+      "display_name": "PREPARE_FOR_TEST",
+      "name": "'prepare_for_test'",
+      "parent": [6, 7],
+      "runner": {
+        "name": "airflow",
+        "operater_name": "PythonOperator",
+        "function": "prepare_for_test",
+        "context": "True",
+        "minutes_name": "PREPARE_FOR_TEST_TIMEOUT",
+        "minutes": "5",
+        "execution_timeout": "timedelta(minutes=PREPARE_FOR_TEST_TIMEOUT)",
+        "rule": "TriggerRule.ONE_SUCCESS",
+        "dag": "MAIN_DAG"
+
+      }
+    },
+    {
+      "id": 9,
+      "display_name": "END",
+      "name": "'end'",
+      "parent": [3, 8],
+      "runner": {
+        "name": "airflow",
+        "operater_name": "DummyOperator",
+        "function": "",
+        "context": "",
+        "minutes_name": "",
+        "minutes": "",
+        "execution_timeout": "",
+        "rule": "",
+        "dag": "MAIN_DAG"
+
+      }
+    }
+
+  ],
+
+  "edges": [{
+    "id": 0,
+    "start": "start",
+    "end": "fetch_submission_info"
+  },
+    {
+      "id": 1,
+      "start": "fetch_submission_info",
+      "end": "review_request"
+    },
+    {
+      "id": 2,
+      "start": "fetch_submission_info",
+      "end": "select_test"
+    },
+    {
+      "id": 3,
+      "start": "select_test",
+      "end": "check_free_space"
+    },
+    {
+      "id": 4,
+      "start": "check_free_space",
+      "end": "check_image"
+    },
+    {
+      "id": 5,
+      "start": "check_image",
+      "end": "skip_build_nxos"
+    },
+    {
+      "id": 6,
+      "start": "check_image",
+      "end": "build_nxos"
+    },
+    {
+      "id": 7,
+      "start": "skip_build_nxos",
+      "end": "prepare_for_test"
+    },
+    {
+      "id": 8,
+      "start": "build_nxos",
+      "end": "prepare_for_test"
+    },
+
+    {
+      "id": 9,
+      "start": "prepare_for_test",
+      "end": "end"
+    },
+    {
+      "id": 10,
+      "start": "review_request",
+      "end": "end"
+    }
+  ]
+}
