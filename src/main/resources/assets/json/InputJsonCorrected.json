@@ -1,0 +1,149 @@
+{
+	"display_name": "MAIN_DAG",
+	"name": "'PAW_WORKFLOW_N9K_INT2'",
+	"id": "PAW_WORKFLOW_N9K_INT2",
+	"runner_names": ["airflow", "jenkins"],
+	"description": "'PAW Template Sample'",
+	"child_dagname": "'BUILD'",
+	"interval": "None",
+	"start_date": "2018-6-8",
+	"nodes": [
+      {
+		"id": 0,
+		"display_name": "START",
+		"name": "A",
+		"adjacents": [{
+			"id": "1"
+		}]
+
+	  },
+      {
+        "id": 1,
+        "display_name": "FETCH_SUBMISSION_INFO",
+        "name": "B",
+        "adjacents": [{
+            "id": "2"
+        }, {
+            "id": "3"
+        }]
+
+      },
+      {
+        "id": 2,
+        "display_name": "REVIEW_REQUEST",
+        "name": "C",
+        "adjacents": [{
+            "id": "14"
+        }]
+
+      },
+      {
+        "id": 3,
+        "display_name": "SELECT_TEST",
+        "name": "D",
+        "adjacents": [{
+            "id": "4"
+        }]
+
+      },
+      {
+        "id": 4,
+        "display_name": "CHECK_SPACE",
+        "name": "E",
+        "adjacents": [{
+            "id": "5"
+        }]
+
+      },
+      {
+        "id": 5,
+        "display_name": "CHECK_IMAGE",
+        "name": "F",
+        "adjacents": [{
+            "id": "6"
+        }, {
+            "id": "7"
+        }]
+
+      },
+      {
+        "id": 6,
+        "display_name": "SKIP_BUILD",
+        "name": "I",
+        "adjacents": [{
+            "id": "8"
+        }]
+
+      },
+      {
+        "id": 7,
+        "display_name": "BUILD",
+        "name": "J",
+        "adjacents": [{
+            "id": "8"
+        }]
+
+      },
+      {
+        "id": 8,
+        "display_name": "PREPARE_FOR_TEST",
+        "name": "K",
+        "adjacents": [{
+            "id": "9"
+        }]
+      },
+      {
+        "id": 9,
+        "display_name": "select_ez_best_tier1_sanity",
+        "name": "L",
+        "adjacents": [{
+            "id": "10"
+        }, {
+            "id": "11"
+        }]
+
+      },
+      {
+        "id": 10,
+        "display_name": "submit_ez_best_tier1_sanity",
+        "name": "M",
+        "adjacents": [{
+            "id": "12"
+        }]
+
+      },
+      {
+        "id": 11,
+        "display_name": "skip_ez_best_tier1_sanity",
+        "name": "N",
+        "adjacents": [{
+            "id": "12"
+        }]
+
+      },
+      {
+        "id": 12,
+        "display_name": "check_ez_best_tier1_sanity",
+        "name": "O",
+        "adjacents": [{
+            "id": "13"
+        }]
+
+      },
+      {
+        "id": 13,
+        "display_name": "cleanup",
+        "name": "P",
+        "adjacents": [{
+            "id": "14"
+        }]
+
+      },
+      {
+        "id": 14,
+        "display_name": "end",
+        "name": "Q",
+        "adjacents": []
+      }
+    ]
+}

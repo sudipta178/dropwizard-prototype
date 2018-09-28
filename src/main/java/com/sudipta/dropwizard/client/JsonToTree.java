@@ -9,8 +9,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.Stack;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class JsonToTree {
+    private static final Logger logger = LoggerFactory.getLogger(JsonToTree.class);
+
     //Create an ObjectMapper instance
     private static  ObjectMapper mapper = new ObjectMapper();
     private Set<String> nodeSet = new HashSet<>();

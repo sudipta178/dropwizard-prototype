@@ -5,10 +5,15 @@ import com.sudipta.dropwizard.config.DropwizardPrototypeConfiguration;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 public class DropwizardPrototypeApplication extends Application<DropwizardPrototypeConfiguration> {
+    private static final Logger logger = LoggerFactory.getLogger(DropwizardPrototypeApplication.class);
 
     public static void main(String[] args) throws Exception {
+        logger.info("Starting application ...");
         JsonToTree jsonToTree = new JsonToTree();
         jsonToTree.getJsonTreePaths();
         //new DropwizardPrototypeApplication().run(args);
@@ -16,12 +21,11 @@ public class DropwizardPrototypeApplication extends Application<DropwizardProtot
 
     @Override
     public String getName() {
-        return "hello-world";
+        return "dropwizard-prototype";
     }
 
     @Override
     public void initialize(Bootstrap<DropwizardPrototypeConfiguration> bootstrap) {
-        // nothing to do yet
     }
 
     @Override

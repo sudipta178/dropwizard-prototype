@@ -5,11 +5,30 @@
   <artifactId>dropwizard-prototype</artifactId>
   <name>dropwizard-prototype</name>
   <version>1.0.1</version>
-  <prerequisites>
-    <maven>3.0.0</maven>
-  </prerequisites>
   <build>
     <plugins>
+      <plugin>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>3.0.0-M2</version>
+        <executions>
+          <execution>
+            <id>enforce-versions</id>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+            <configuration>
+              <rules>
+                <requireMavenVersion>
+                  <version>3.0.0</version>
+                </requireMavenVersion>
+                <requireJavaVersion>
+                  <version>1.8</version>
+                </requireJavaVersion>
+              </rules>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
       <plugin>
         <artifactId>maven-shade-plugin</artifactId>
         <version>2.4.1</version>
@@ -98,6 +117,16 @@
       </plugin>
     </plugins>
   </build>
+  <repositories>
+    <repository>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <snapshots />
+      <id>maven-snapshots</id>
+      <url>http://oss.sonatype.org/content/repositories/snapshots</url>
+    </repository>
+  </repositories>
   <dependencies>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
@@ -222,9 +251,13 @@
     </dependencies>
   </dependencyManagement>
   <properties>
+    <logback.version>1.2.3</logback.version>
     <dropwizard.version>1.3.5</dropwizard.version>
     <mainClass>com.sudipta.dropwizard.DropwizardPrototypeApplication</mainClass>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <slf4j.version>1.7.25</slf4j.version>
+    <log4j.version>1.2.17</log4j.version>
+    <log4j2.version>2.11.1</log4j2.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 </project>
