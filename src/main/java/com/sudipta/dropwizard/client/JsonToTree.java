@@ -4,11 +4,13 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.Stack;
+import java.util.StringTokenizer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,26 +21,58 @@ public class JsonToTree {
     private static  ObjectMapper mapper = new ObjectMapper();
     private Set<String> nodeSet = new HashSet<>();
 
+    public static final String JSON_PATH = "assets/json/sampleProducerforKafkaPush.json";
+
     public Set<String> getJsonTreePaths() {
         Set<String> pathSet = new HashSet<>();
         List<String> paths = new ArrayList<>();
         try {
-            //Create tree from JSON
-            InputStream jsonInput = JsonToTree.class.getClassLoader().getResourceAsStream("assets/json/correctedJson.json");
-            JsonNode rootNode = mapper.readTree(jsonInput);
-            System.out.println("Input JSON Read");
-
+            JsonNode rootNode = readJson();
             parseNode(rootNode, paths, pathSet);
             System.out.println("JSON Tree Parse Done");
 
             System.out.println("Total Paths: " + pathSet.size());
-            for (String path : pathSet) {
-                System.out.println(path);
-            }
+            pathSet.forEach(path -> System.out.println(path));
+
         } catch(Exception e) {
             e.printStackTrace();
         }
-        return pathSet;
+        return Collections.unmodifiableSet(pathSet);
+    }
+
+    public List<String> findNodes(String... nodePaths) {
+        List<String> nodevalues = new ArrayList<>();
+        try {
+            JsonNode rootNode = readJson();
+            if (null != rootNode) {
+                for (String nodePath : nodePaths) {
+                    StringTokenizer st = new StringTokenizer(nodePath, "/", false);
+                    JsonNode tempNode = rootNode.deepCopy();
+                    while (st.hasMoreTokens()) {
+                        JsonNode childNode = tempNode.findValue(st.nextToken());
+                        if (null != childNode) {
+                            if (null != childNode.textValue()) {
+                                nodevalues.add(childNode.textValue());
+                            }
+                            tempNode = childNode;
+                        }
+                    }
+                }
+            }
+
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return Collections.unmodifiableList(nodevalues);
+    }
+
+    private JsonNode readJson() throws Exception {
+        //Create tree from JSON
+        InputStream jsonInput = JsonToTree.class.getClassLoader().getResourceAsStream(JSON_PATH);
+        JsonNode rootNode = mapper.readTree(jsonInput);
+        System.out.println("Input JSON Read");
+
+        return rootNode;
     }
 
     private void parseNode(JsonNode rootNode, List<String> paths, Set<String> pathSet) {

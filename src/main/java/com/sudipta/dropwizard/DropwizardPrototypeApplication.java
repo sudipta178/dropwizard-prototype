@@ -5,6 +5,8 @@ import com.sudipta.dropwizard.config.DropwizardPrototypeConfiguration;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import java.util.List;
+import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,9 +15,10 @@ public class DropwizardPrototypeApplication extends Application<DropwizardProtot
     private static final Logger logger = LoggerFactory.getLogger(DropwizardPrototypeApplication.class);
 
     public static void main(String[] args) throws Exception {
-        logger.info("Starting application ...");
-        JsonToTree jsonToTree = new JsonToTree();
-        jsonToTree.getJsonTreePaths();
+        logger.info("Starting dropwizard-prototype application ...");
+
+        List<String> paths = new JsonToTree().findNodes("payload/head_commit/author/name", "payload/repository/owner/name");
+        paths.forEach(path -> System.out.println("Tree Value: " + path));
         //new DropwizardPrototypeApplication().run(args);
     }
 
